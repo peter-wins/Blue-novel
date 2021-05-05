@@ -40,7 +40,7 @@ func GlobalLoggerMiddleware() gin.HandlerFunc {
 		logrus.PanicLevel: 	logWriter,
 	}
 
-	loggerTool.AddHook(lfshook.NewHook(writeMap, &logrus.JSONFormatter{
+	logerTool.AddHook(lfshook.NewHook(writeMap, &logrus.JSONFormatter{
 		TimestampFormat: "2006-01-02 15:04:05",
 	}))
 	return func(c *gin.Context){
@@ -73,10 +73,15 @@ func GlobalLoggerMiddleware() gin.HandlerFunc {
 			//"line":			line,
 			//"functionName":	functionName,
 			// 返回的响应数据和 code,有大用
-
+			"responseCode": responseData.Code,
+			"responseData": responseJsonData,
 
 		}
+		if responseData.Code == response.Ok || responseData.Code == response.Failure {
+			logerTool.WithFields(logrusFields).Infoln(responseData.Msg)
+
+		}else {
+			logerTool.WithFields(logrusFields).Errorln(responseData.Msg)
+		}
 	}
-
-
 }

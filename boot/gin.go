@@ -17,6 +17,7 @@ func GinLaunch(){
 	// 加载全局中间件
 	global.Gin.Use(
 		middleware.GlobalExceptionMiddleware,
+		middleware.GlobalLoggerMiddleware(),	//日志中间件
 		)
 	// 新加的路由
 	routers.InitRouter(global.Gin)
